@@ -14,14 +14,19 @@ namespace WindowserviceDemo
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                string filename = @"C:\Users\salini.s\source\repos\WindowserviceDemo\WindowserviceDemo" + DateTime.Now.ToString("ddmmmyyyy")+".txt";
-                if (!System.IO.File.Exists(filename))
-                {
-                    System.IO.File.Create(filename);
-                }
-                System.IO.File.AppendAllText(filename, "Added at " + DateTime.Now.ToString("hhmmss"));
+               
                 await Task.Delay(1000, stoppingToken);
             }
+        }
+        public override Task StartAsync(CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("BackgroundService starting up...");
+            return base.StartAsync(cancellationToken);
+        }
+        public override Task StopAsync(CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("BackgroundService stopping...");
+            return base.StopAsync(cancellationToken);
         }
     }
 }
